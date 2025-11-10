@@ -9,4 +9,4 @@ def open_short_url(short_code, base_domain):
         webbrowser.open(full_url)
         return
 
-open_short_url("abc", "example.com")
+open_short_url("github", "sansolini.com")
