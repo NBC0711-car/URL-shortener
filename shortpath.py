@@ -1,27 +1,12 @@
 import dns.resolver
 import webbrowser
 
-# Dominio base
-DOMINIO_BASE = "sansolini.com"
+def open_short_url(short_code, base_domain):
+    fqdn = f"{short_code}.{base_domain}"
+    answers = dns.resolver.resolve(fqdn, 'TXT')
+    for rdata in answers:
+        full_url = ''.join(rdata.strings).strip('"')
+        webbrowser.open(full_url)
+        return
 
-# Pedimos al usuario una ruta corta
-path = input("Introduce la ruta corta (por ejemplo 'github'): ")
-
-# Construimos el dominio completo
-dominio = f"{path}.{DOMINIO_BASE}"
-
-# Consultamos el registro TXT del dominio
-res = dns.resolver.resolve(dominio, "TXT")
-
-# Extraemos la primera cadena TXT
-url_destino = None
-for rdata in res:
-    for txt in rdata.strings:
-        url_destino = txt.decode()
-        break
-    if url_destino:
-        break
-
-# Mostramos y abrimos la URL
-print(f"URL obtenida del registro TXT de {dominio}: {url_destino}")
-webbrowser.open(url_destino)
+open_short_url("abc", "example.com")
